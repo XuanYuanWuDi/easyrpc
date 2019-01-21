@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 
 /**
  * @Auther: hlj
@@ -15,6 +16,11 @@ import java.lang.reflect.Method;
  * @Description:
  */
 public class ServerHandler extends SimpleChannelInboundHandler<EasyRpcRequest> {
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("11111110000000011111111111");
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, EasyRpcRequest msg) throws Exception {

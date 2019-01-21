@@ -1,21 +1,20 @@
-package easyrpc.rpcClient;
+package easyrpc.rpcHttpClient;
 
 import easyrpc.model.EasyRpcRequest;
-import easyrpc.model.EasyRpcResponse;
-import easyrpc.rpccode.RpcDecoder;
-import easyrpc.rpccode.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.*;
+
 
 /**
  * @Auther: hlj
- * @Date: 2019/1/16 11:42
+ * @Date: 2019/1/18 14:10
  * @Description:
  */
-public class RpcClient {
+public class HttpRpcClient {
 
     /**
      * 请求的服务端地址
@@ -27,14 +26,19 @@ public class RpcClient {
      */
     private Integer port;
 
+    /**
+     * 请求参数
+     */
+    private EasyRpcRequest easyRpcRequest;
 
-    public RpcClient(String host,Integer port){
-           this.host = host;
-           this.port = port;
+    public HttpRpcClient(String host, Integer port,EasyRpcRequest easyRpcRequest) {
+        this.host = host;
+        this.port = port;
+        this.easyRpcRequest = easyRpcRequest;
     }
 
-    public EasyRpcResponse send(EasyRpcRequest request) throws InterruptedException {
-        EasyRpcResponse response = new EasyRpcResponse();
+    public FullHttpResponse send(FullHttpRequest request) throws InterruptedException {
+        FullHttpResponse response;
         Bootstrap bootstrap = new Bootstrap();
 
         NioEventLoopGroup nioEventLoopGroup = new NioEventLoopGroup();
@@ -46,9 +50,10 @@ public class RpcClient {
 
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
-                            ch.pipeline().addLast(new RpcEncoder(EasyRpcRequest.class));
-                            ch.pipeline().addLast(new RpcDecoder(EasyRpcResponse.class));
-                            ch.pipeline().addLast(new ClientHandler());
+                            ch.pipeline().addLast(new HttpRequestEncoder());
+                            ch.pipeline().addLast(new HttpResponseDecoder());
+                            ch.pipeline().addLast(new HttpObjectAggregator(65536));
+                            ch.pipeline().addLast(new HttpClientHandler());
                         }
                     });
             Channel channel = bootstrap.connect(host, port).sync().channel();
@@ -61,15 +66,15 @@ public class RpcClient {
              */
             long beginTime = System.currentTimeMillis();
 
-            while((System.currentTimeMillis() - beginTime) <= (60 * 1000)) {
-                if(ClientLocalCache.get(request.getRequestId()) != null ) {
-                    response = ClientLocalCache.get(request.getRequestId());
+            while ((System.currentTimeMillis() - beginTime) <= (60 * 1000)) {
+                if (HttpClientLocalCache.isExsit(easyRpcRequest.getRequestId())) {
+                    response = HttpClientLocalCache.get(easyRpcRequest.getRequestId());
                     channel.closeFuture().sync();
                     return response;
                 }
             }
-            return response;
-        }finally {
+            return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,HttpResponseStatus.FAILED_DEPENDENCY);
+        } finally {
             //释放资源
             nioEventLoopGroup.shutdownGracefully();
         }

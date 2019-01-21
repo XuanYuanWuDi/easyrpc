@@ -10,7 +10,7 @@ import easyrpc.proxy.RpcProxy;
 public class TestClient {
 
     public static void main(String[] args) {
-        Test test = (Test) RpcProxy.create(Test.class,"easyrpc.test.Test");
+        Test test = (Test) RpcProxy.create(Test.class,"easyrpc.test.Test","HTTP");
         System.out.println("客户端收到执行结果为----" + test.hello());
     }
 }
