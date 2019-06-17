@@ -2,8 +2,8 @@ package easyrpc.rpcClient;
 
 import easyrpc.model.EasyRpcRequest;
 import easyrpc.model.EasyRpcResponse;
-import easyrpc.rpccode.RpcDecoder;
-import easyrpc.rpccode.RpcEncoder;
+import easyrpc.rpcCode.RpcDecoder;
+import easyrpc.rpcCode.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

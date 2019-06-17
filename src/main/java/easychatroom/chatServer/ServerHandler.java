@@ -1,3 +1,6 @@
+package easychatroom.chatServer;
+
+import easychatroom.model.RpcRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

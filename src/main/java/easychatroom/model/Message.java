@@ -1,3 +1,5 @@
+package easychatroom.model;
+
 import java.io.Serializable;
 
 /**

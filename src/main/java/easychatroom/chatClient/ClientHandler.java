@@ -1,4 +1,7 @@
+package easychatroom.chatClient;
+
 import com.alibaba.fastjson.JSONObject;
+import easychatroom.model.RpcRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -21,7 +24,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-        RpcRequest request = JSONObject.parseObject(JSONObject.toJSONString(msg),RpcRequest.class);
+        RpcRequest request = JSONObject.parseObject(JSONObject.toJSONString(msg), RpcRequest.class);
         System.out.println("时间:" + request.getTime() +"\r\n"+ "发送人:"+request.getUserId() +
                 "\r\n" + "消息:"+request.getData());
     }

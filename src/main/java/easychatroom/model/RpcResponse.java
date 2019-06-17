@@ -1,3 +1,5 @@
+package easychatroom.model;
+
 import java.io.Serializable;
 
 /**
@@ -5,7 +7,7 @@ import java.io.Serializable;
  * @Date: 2019/1/11 17:09
  * @Description:
  */
-public class RpcRequest implements Serializable {
+public class RpcResponse implements Serializable {
 
     private String id;
 
@@ -69,7 +71,7 @@ public class RpcRequest implements Serializable {
 
     @Override
     public String toString() {
-        return "RpcRequest{" +
+        return "RpcResponse{" +
                 "id='" + id + '\'' +
                 ", data=" + data +
                 ", merNumber='" + merNumber + '\'' +

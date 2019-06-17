@@ -1,3 +1,8 @@
+package easychatroom.chatClient;
+
+import easychatroom.model.RpcRequest;
+import easychatroom.rpcCode.RpcDecoder;
+import easychatroom.rpcCode.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

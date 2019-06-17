@@ -1,7 +1,8 @@
+package easychatroom;
+
+import easychatroom.chatClient.NettyClient;
+import easychatroom.model.RpcRequest;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
